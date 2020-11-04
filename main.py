@@ -2,16 +2,10 @@ import os
 from os import path
 from FacebookPostsScraper import FacebookPostsScraper as Fps
 from pprint import pprint as pp
-#from python_graphql_client import GraphqlClient
 from database import database as dbs
+from debuging import debuging as dbg
 import json
 from bs4 import BeautifulSoup
-import re
-import string
-import unicodedata
-import emoji
-import spacy
-import en_core_web_sm
 import requests
 import random
 from flask import Flask, jsonify, make_response
@@ -19,56 +13,6 @@ from flask import Flask, jsonify, make_response
 app = Flask(__name__)
 
 tasks = [{'id': 1}]
-
-def strip_html(text):
-    soup = BeautifulSoup(text, 'html.parser')
-    return soup.get_text()
-
-def remove_between_square_brackets(text):
-    return re.sub('\[[^]]*\]', '', text)
-
-def denoise_text(text):
-    text = strip_html(text)
-    text = remove_between_square_brackets(text)
-    return text
-
-def give_emoji_free_text(self, text):
-    allchars = [str for str in text]
-    emoji_list = [c for c in allchars if c in emoji.UNICODE_EMOJI]
-    clean_text = ' '.join([str for str in text.split() if not any(i in str for i in emoji_list)])
-    return clean_text
-
-def replace_char(text):
-    text = re.sub('[,"''"!@#$1234567890.:;?¿¡!]', '', text)
-    text = text.replace("enero", "")
-    text = text.replace("febrero", "")
-    text = text.replace("marzo", "")
-    text = text.replace("abril", "")
-    text = text.replace("mayo", "")
-    text = text.replace("junio", "")
-    text = text.replace("julio", "")
-    text = text.replace("agosto", "")
-    text = text.replace("septiembre", "")
-    text = text.replace("octubre", "")
-    text = text.replace("noviembre", "")
-    text = text.replace("diciembre", "")
-    text = text.replace("make", "")
-    text = text.replace("will", "")
-    return text
-
-def normalize(text):
-    nlp = en_core_web_sm.load()
-    doc = nlp(text)
-    words = [t.orth_ for t in doc if not t.is_punct | t.is_stop]
-    lexical_tokens = [t.lower() for t in words if len(t) > 3 and t.isalpha()]
-    return lexical_tokens
-
-def parce_json(text):
-    json_text = json.dumps(text, ensure_ascii=False)
-    data = {}
-    data["words"] = []
-    data["words"].append(json_text)
-    return data
 
 def processWords(words):
     word = words[random.randrange(0, len(words), 1)]
@@ -136,11 +80,11 @@ def get_task(task_id):
     d = path.dirname(__file__) if "__file__" in locals() else os.getcwd()
     text = open(path.join(d, 'my_posts.csv')).read()
 
-    text = denoise_text(text)
-    text = give_emoji_free_text(r'',text)
-    text = replace_char(text)
-    text = normalize(text)
-    data = parce_json(text)
+    text = dbg.denoise_text(text)
+    text = dbg.give_emoji_free_text(r'',text)
+    text = dbg.replace_char(text)
+    text = dbg.normalize(text)
+    data = dbg.parce_json(text)
     data_podium = processWords(text)
 
     # Synchronous mutation

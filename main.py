@@ -2,7 +2,8 @@ import os
 from os import path
 from FacebookPostsScraper import FacebookPostsScraper as Fps
 from pprint import pprint as pp
-from python_graphql_client import GraphqlClient
+#from python_graphql_client import GraphqlClient
+from database import database as dbs
 import json
 from bs4 import BeautifulSoup
 import re
@@ -105,28 +106,6 @@ def processWordtoWord(word):
 
     return data_podium
 
-def conect_graphql(idUser):
-    # Instantiate the client with an endpoint.
-    client = GraphqlClient(endpoint="https://giftubackend.herokuapp.com/api")
-
-    query = """
-            query GetSocialNetwork($id:ID!){
-            social_network(id:$id){
-                    receiver_name
-                    social_network_name
-                    url_social_network
-            }
-        }
-    """
-    variables = {"id": idUser}
-
-    # Synchronous request
-    data = client.execute(query=query, variables=variables)
-
-    #print(data['data']['social_network']['url_social_network'])
-    id_user_facebok = data['data']['social_network']['url_social_network']
-    return id_user_facebok
-
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
@@ -137,7 +116,8 @@ def get_task(task_id):
     if len(task) == 0:
         not_found(404)
 
-    id_user_facebok = conect_graphql(task_id)
+    #id_user_facebok = conect_graphql(task_id)
+    id_user_facebok = dbs.conect_graphql(task_id)
 
     # Enter your Facebook email and password
     email = 'sue@synapbox.com'
@@ -163,37 +143,8 @@ def get_task(task_id):
     data = parce_json(text)
     data_podium = processWords(text)
 
-    client = GraphqlClient(endpoint="https://giftubackend.herokuapp.com/api")
-
-    mutation = """
-            mutation AddPodium($podium:JSON!){
-            PodiumMutation(podium:$podium){
-                podium
-            }
-        }
-    """
-    variables = {"podium":data_podium}
-
-    mutation_result = """
-            mutation AddSocialNetwrok(
-            $id_pv_social_network:ID!,
-            $search_result:JSON!,
-            ){
-            updateSocialNetwork(
-                    id_pv_social_network:$id_pv_social_network,
-                    search_result:$search_result,
-            ){
-                id_social_network
-                search_result
-            }
-        }
-        """
-
-    variables_result = { "id_pv_social_network": task_id, "search_result": data }
-
-
     # Synchronous mutation
-    dataResponse = client.execute(query=mutation, variables=variables)
+    dataResponse = dbs.podium_graphql(data_podium)
     #dataResult = client.execute(query=mutation_result, variables=variables_result)
 
     return jsonify(dataResponse)

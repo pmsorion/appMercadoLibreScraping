@@ -25,22 +25,28 @@ class textprocessor:
         LIMIT = 3
         counter = 0
         podium = []
-        while counter < LIMIT:
-            subitem = random.randrange(0, len(items), 1)
-            podium.append(({"name": items[subitem][0]}, {"url": items[subitem][1]}, {"price": items[subitem][2]}, {"img": items[subitem][3]}))
-            counter += 1
-
-        json_podium = json.dumps(podium, ensure_ascii=False)
         data_podium = {}
-        data_podium["products"] = []
-        data_podium["products"].append(json_podium)
-        
 
-        #print(type(json_podium))
+        if len(items) > 0:
+            while counter < LIMIT:
+                subitem = random.randrange(0, len(items), 1)
+                podium.append(({"name": items[subitem][0]}, {"url": items[subitem][1]}, {"price": items[subitem][2]}, {"img": items[subitem][3]}))
+                counter += 1
+
+            json_podium = json.dumps(podium, ensure_ascii=False)
+            data_podium["products"] = []
+            data_podium["products"].append(json_podium)
+
+        if not 'products' in data_podium or len(data_podium['products']) == 0:
+            data_podium = {'error': 'informacion no encontrada'}
+
         return data_podium
-        #return items
 
     def processWords(words):
-        word = words[random.randrange(0, len(words), 1)]
-        data_podium = textprocessor.processWordtoWord(word)
+        if len(words) > 0:
+            word = words[random.randrange(0, len(words), 1)]
+            data_podium = textprocessor.processWordtoWord(word)
+        else:
+            data_podium = {'error': 'informacion no encontrada'}
+
         return data_podium

@@ -42,12 +42,15 @@ def get_task(task_id):
     d = path.dirname(__file__) if "__file__" in locals() else os.getcwd()
     text = open(path.join(d, 'my_posts.csv')).read()
 
-    text = dbg.denoise_text(text)
-    text = dbg.give_emoji_free_text(r'',text)
-    text = dbg.replace_char(text)
-    text = dbg.normalize(text)
-    data = dbg.parce_json(text)
-    data_podium = txtpr.processWords(text)
+    if len(text) > 0:
+        text = dbg.denoise_text(text)
+        text = dbg.give_emoji_free_text(r'',text)
+        text = dbg.replace_char(text)
+        text = dbg.normalize(text)
+        data = dbg.parce_json(text)
+        data_podium = txtpr.processWords(text)
+    else:
+        data_podium = {'error': 'informacion no encontrada'}
 
     # Synchronous mutation
     dataResponse = dbs.podium_graphql(data_podium)

@@ -26,15 +26,19 @@ class textprocessor:
         counter = 0
         podium = []
         while counter < LIMIT:
-            podium.append(items[random.randrange(0, len(items), 1)])
+            subitem = random.randrange(0, len(items), 1)
+            podium.append(({"name": items[subitem][0]}, {"url": items[subitem][1]}, {"price": items[subitem][2]}, {"img": items[subitem][3]}))
             counter += 1
 
         json_podium = json.dumps(podium, ensure_ascii=False)
         data_podium = {}
         data_podium["products"] = []
         data_podium["products"].append(json_podium)
+        
 
+        #print(type(json_podium))
         return data_podium
+        #return items
 
     def processWords(words):
         word = words[random.randrange(0, len(words), 1)]

@@ -35,21 +35,23 @@ class database:
         dataResponse = client.execute(query=mutation, variables=variables)
         return dataResponse
 
-    def search_result_graphql():
-        pass
-        # mutation_result = """
-        #         mutation AddSocialNetwrok(
-        #         $id_pv_social_network:ID!,
-        #         $search_result:JSON!,
-        #         ){
-        #         updateSocialNetwork(
-        #                 id_pv_social_network:$id_pv_social_network,
-        #                 search_result:$search_result,
-        #         ){
-        #             id_social_network
-        #             search_result
-        #         }
-        #     }
-        #     """
+    def search_result_graphql(task_id, data):
+        mutation_result = """
+                mutation AddSocialNetwrok(
+                $id_pv_social_network:ID!,
+                $search_result:JSON!,
+                ){
+                updateSocialNetwork(
+                        id_pv_social_network:$id_pv_social_network,
+                        search_result:$search_result,
+                ){
+                    id_pv_social_network
+                    search_result
+                }
+            }
+            """
 
-        # variables_result = { "id_pv_social_network": task_id, "search_result": data }
+        variables_result = { "id_pv_social_network": task_id, "search_result": data }
+
+        dataResult = client.execute(query=mutation_result, variables=variables_result)
+        return dataResult

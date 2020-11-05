@@ -1,11 +1,12 @@
 import os
 from os import path
 from FacebookPostsScraper import FacebookPostsScraper as Fps
-from pprint import pprint as pp
 from database import database as dbs
 from debuging import debuging as dbg
 from textprocessor import textprocessor as txtpr
+from pprint import pprint as pp
 from flask import Flask, jsonify, make_response
+import json
 
 app = Flask(__name__)
 
@@ -50,9 +51,9 @@ def get_task(task_id):
 
     # Synchronous mutation
     dataResponse = dbs.podium_graphql(data_podium)
-    #dataResult = client.execute(query=mutation_result, variables=variables_result)
+    #dataResult = dbs.search_result_graphql(task_id, data)
 
-    return jsonify(dataResponse)
+    return json.dumps(data_podium)
 
 if __name__ == '__main__':
     app.run(debug=True)

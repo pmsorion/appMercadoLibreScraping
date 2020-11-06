@@ -5,9 +5,10 @@ import json
 
 class textprocessor:
 
-    def processWordtoWord(word):
+    def processWordtoWord(word, occasion_name):
+        word_concat = word + ' ' + occasion_name
         headers = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9'}
-        url = (f'http://listado.mercadolibre.com.mx/{word}#D[A:{word},L:1]')
+        url = (f'http://listado.mercadolibre.com.mx/{word_concat}#D[A:{word_concat},L:1]')
 
         response = requests.get(url,headers=headers)#, proxies=proxies)
 
@@ -43,10 +44,10 @@ class textprocessor:
 
         return data_podium
 
-    def processWords(words):
+    def processWords(words, occasion_name):
         if len(words) > 0:
             word = words[random.randrange(0, len(words), 1)]
-            data_podium = textprocessor.processWordtoWord(word)
+            data_podium = textprocessor.processWordtoWord(word, occasion_name)
         else:
             data_podium = {'error': 'informacion no encontrada'}
 

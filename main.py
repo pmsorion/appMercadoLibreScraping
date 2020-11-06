@@ -22,8 +22,12 @@ def get_task(task_id):
     if len(task) == 0:
         not_found(404)
 
-    #id_user_facebok = conect_graphql(task_id)
-    id_user_facebok = dbs.conect_graphql(task_id)
+    data_user = dbs.conect_graphql(task_id)
+    #id_user_facebok, occasion_name = json.dumps(dataUser)
+
+    id_user_facebok = 'https://www.facebook.com/cesarsalascasasmx/'
+    #id_user_facebok = data_user['data']['social_network']['url_social_network']
+    occasion_name = data_user['data']['social_network']['occasion_name']
 
     # Enter your Facebook email and password
     email = 'sue@synapbox.com'
@@ -48,7 +52,7 @@ def get_task(task_id):
         text = dbg.replace_char(text)
         text = dbg.normalize(text)
         data = dbg.parce_json(text)
-        data_podium = txtpr.processWords(text)
+        data_podium = txtpr.processWords(text, occasion_name)
     else:
         data_podium = {'error': 'informacion no encontrada'}
 
@@ -56,6 +60,7 @@ def get_task(task_id):
     dataResponse = dbs.podium_graphql(data_podium)
     #dataResult = dbs.search_result_graphql(task_id, data)
 
+    #return {'saludos': 'saludos tocayo'}
     return json.dumps(data_podium)
 
 if __name__ == '__main__':

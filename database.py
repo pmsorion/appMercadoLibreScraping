@@ -9,8 +9,8 @@ class database:
                 query GetSocialNetwork($id:ID!){
                 social_network(id:$id){
                         receiver_name
-                        social_network_name
                         url_social_network
+                        occasion_name
                 }
             }
         """
@@ -19,9 +19,11 @@ class database:
         # Synchronous request
         data = client.execute(query=query, variables=variables)
 
-        #print(data['data']['social_network']['url_social_network'])
-        id_user_facebok = data['data']['social_network']['url_social_network']
-        return id_user_facebok
+        #id_user_facebok = data['data']['social_network']['url_social_network']
+        #occasion_name = data['data']['social_network']['occasion_name']
+        #id_user_facebok = 'https://www.facebook.com/cesarsalascasasmx/'
+
+        return data
 
     def podium_graphql(data_podium):
         mutation = """

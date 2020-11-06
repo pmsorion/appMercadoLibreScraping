@@ -30,7 +30,8 @@ class textprocessor:
         if len(items) > 0:
             while counter < LIMIT:
                 subitem = random.randrange(0, len(items), 1)
-                podium.append(({"name": items[subitem][0]}, {"url": items[subitem][1]}, {"price": items[subitem][2]}, {"img": items[subitem][3]}))
+                # podium.append(({"name": items[subitem][0]}, {"url": items[subitem][1]}, {"price": items[subitem][2]}, {"img": items[subitem][3]}))
+                podium.append([{"name": items[subitem][0], "url": items[subitem][1], "price": items[subitem][2], "img": items[subitem][3]}])
                 counter += 1
 
             json_podium = json.dumps(podium, ensure_ascii=False)

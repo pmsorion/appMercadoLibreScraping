@@ -29,7 +29,7 @@ class database:
         mutation = """
                 mutation AddPodium($podium:JSON!){
                 PodiumMutation(podium:$podium){
-                    podium
+                    id_podium
                 }
             }
         """

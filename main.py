@@ -25,8 +25,8 @@ def get_task(task_id):
     data_user = dbs.conect_graphql(task_id)
     #id_user_facebok, occasion_name = json.dumps(dataUser)
 
-    id_user_facebok = 'https://www.facebook.com/cesarsalascasasmx/'
-    #id_user_facebok = data_user['data']['social_network']['url_social_network']
+    #id_user_facebok = 'https://www.facebook.com/cesarsalascasasmx/'
+    id_user_facebok = data_user['data']['social_network']['url_social_network']
     occasion_name = data_user['data']['social_network']['occasion_name']
 
     # Enter your Facebook email and password
@@ -61,7 +61,8 @@ def get_task(task_id):
     #dataResult = dbs.search_result_graphql(task_id, data)
 
     #return {'saludos': 'saludos tocayo'}
-    return json.dumps(data_podium)
+    #return json.dumps(data_podium)
+    return json.dumps(dataResponse)
 
 if __name__ == '__main__':
     app.run(debug=True)

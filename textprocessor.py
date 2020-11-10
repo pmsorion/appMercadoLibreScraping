@@ -19,8 +19,7 @@ class textprocessor:
 
         for item in soup.select('.ui-search-layout__item'):
             try:
-                if int(item.select('.price-tag')[0].get_text()) <= 1000:
-                    items.append([item.select('a')[0]['title'], item.select('a')[0]['href'], item.select('.price-tag')[0].get_text(), item.select('.ui-search-result-image__element')[0]['data-src']])
+                items.append([item.select('a')[0]['title'], item.select('a')[0]['href'], item.select('.price-tag')[0].get_text(), item.select('.ui-search-result-image__element')[0]['data-src']])
             except:
                 Exception
 

@@ -60,8 +60,7 @@ def get_task(task_id):
     dataResponse = dbs.podium_graphql(data_podium)
     #dataResult = dbs.search_result_graphql(task_id, data)
 
-    #return {'saludos': 'saludos tocayo'}
-    #return json.dumps(data_podium)
+    print(data_podium)
     return json.dumps(dataResponse)
 
 if __name__ == '__main__':
